@@ -38,21 +38,45 @@ void UART1_Init(void)
  *
  * @return  protothread状态
  */
+
 PT_THREAD(protothread_recv(struct pt *pt))
 {
     PT_BEGIN(pt);
 
     static uint8_t len;
+    static uint8_t index = 0;
 
     while (1) {
-        len = UART1_RecvString(RxBuff);
+        len = UART1_RecvString(RxBuff + index); // 接收字符串并追加到缓冲区
         if (len) {
-            RxBuff[len] = '\0'; // 添加字符串终止符
-            // 根据接收到的内容进行处理，这里简单回显
-            UART1_SendString((PUINT8)"Received: ", 10);
-            UART1_SendString(RxBuff, len);
-            UART1_SendString((PUINT8)"\r\n", 2);
+            index += len; // 更新当前缓冲区索引
+            RxBuff[index] = '\0'; // 确保字符串终止符
+
+            // 检查接收到的字符串是否包含换行符
+            uint8_t *newline_pos = (uint8_t *)strchr((char *)RxBuff, '\n');
+            if (newline_pos != NULL) {
+                // 找到换行符的位置
+                size_t line_length = (newline_pos - RxBuff) + 1;
+
+                // 进行回显处理
+                UART1_SendString((uint8_t *)"Received: ", 10);
+                UART1_SendString(RxBuff, line_length);
+                UART1_SendString((uint8_t *)"\r\n", 2);
+
+                // 将缓冲区剩余部分前移
+                memmove(RxBuff, newline_pos + 1, index - line_length);
+                index -= line_length;
+            }
+
+            // 如果缓冲区满了，强制终止并重置索引（避免溢出）
+            if (index >= RX_BUFF_SIZE - 1) {
+                UART1_SendString((uint8_t *)"Buffer Overflow: ", 17);
+                UART1_SendString(RxBuff, index);
+                UART1_SendString((uint8_t *)"\r\n", 2);
+                index = 0;
+            }
         }
+
         PT_YIELD(pt);
     }
 
