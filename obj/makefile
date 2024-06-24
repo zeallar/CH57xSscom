@@ -9,10 +9,15 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
--include src/subdir.mk
--include StdPeriphDriver/subdir.mk
--include Startup/subdir.mk
--include RVMSIS/subdir.mk
+-include Src/APP/subdir.mk
+-include OS/ProtoThread-Core/transplant_ports/subdir.mk
+-include OS/ProtoThread-Core/sys/subdir.mk
+-include OS/ProtoThread-Core/lib/subdir.mk
+-include OS/ProtoThread-Core/subdir.mk
+-include Drivers/StdPeriphDriver/subdir.mk
+-include Drivers/BLE/HAL/subdir.mk
+-include Core/Startup/subdir.mk
+-include Core/RVMSIS/subdir.mk
 -include subdir.mk
 -include objects.mk
 
@@ -38,34 +43,34 @@ endif
 
 # Add inputs and outputs from these tool invocations to the build variables 
 SECONDARY_FLASH += \
-UART1.hex \
+CH573_PT_Template.hex \
 
 SECONDARY_LIST += \
-UART1.lst \
+CH573_PT_Template.lst \
 
 SECONDARY_SIZE += \
-UART1.siz \
+CH573_PT_Template.siz \
 
 
 # All Target
-all: UART1.elf secondary-outputs
+all: CH573_PT_Template.elf secondary-outputs
 
 # Tool invocations
-UART1.elf: $(OBJS) $(USER_OBJS)
-	@	@	riscv-none-embed-gcc -march=rv32imac -mabi=ilp32 -mcmodel=medany -msmall-data-limit=8 -mno-save-restore -Os -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -fno-common -Wunused  -g -T "F:\文档\串口助手\评估版本\EVT\EXAM\SRC\Ld\Link.ld" -nostartfiles -Xlinker --gc-sections -L"../" -L"F:\文档\串口助手\评估版本\EVT\EXAM\SRC\StdPeriphDriver" -Xlinker --print-memory-usage -Wl,-Map,"UART1.map" --specs=nano.specs --specs=nosys.specs -o "UART1.elf" $(OBJS) $(USER_OBJS) $(LIBS)
+CH573_PT_Template.elf: $(OBJS) $(USER_OBJS)
+	@	@	riscv-none-embed-gcc -march=rv32imac -mabi=ilp32 -mcmodel=medany -msmall-data-limit=8 -mno-save-restore -Os -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -fno-common  -g -T "F:\文档\串口助手\ProtoThread\ProtoThread-Templates-main\CH573_PT_Template\Core\Ld\Link.ld" -nostartfiles -Xlinker --gc-sections -L"../" -L"F:\文档\串口助手\ProtoThread\ProtoThread-Templates-main\CH573_PT_Template\Drivers\BLE\LIB" -L"F:\文档\串口助手\ProtoThread\ProtoThread-Templates-main\CH573_PT_Template\Drivers\StdPeriphDriver" -Xlinker --print-memory-usage -Wl,-Map,"CH573_PT_Template.map" --specs=nano.specs --specs=nosys.specs -o "CH573_PT_Template.elf" $(OBJS) $(USER_OBJS) $(LIBS)
 	@	@
-UART1.hex: UART1.elf
-	@	riscv-none-embed-objcopy -O ihex "UART1.elf"  "UART1.hex"
+CH573_PT_Template.hex: CH573_PT_Template.elf
+	@	riscv-none-embed-objcopy -O ihex "CH573_PT_Template.elf"  "CH573_PT_Template.hex"
 	@	@
-UART1.lst: UART1.elf
-	@	riscv-none-embed-objdump --source --all-headers --demangle --line-numbers --wide "UART1.elf" > "UART1.lst"
+CH573_PT_Template.lst: CH573_PT_Template.elf
+	@	riscv-none-embed-objdump --source --all-headers --demangle --line-numbers --wide "CH573_PT_Template.elf" > "CH573_PT_Template.lst"
 	@	@
-UART1.siz: UART1.elf
-	@	riscv-none-embed-size --format=berkeley "UART1.elf"
+CH573_PT_Template.siz: CH573_PT_Template.elf
+	@	riscv-none-embed-size --format=berkeley "CH573_PT_Template.elf"
 	@	@
 # Other Targets
 clean:
-	-$(RM) $(ASM_UPPER_DEPS)$(OBJS)$(SECONDARY_FLASH)$(SECONDARY_LIST)$(SECONDARY_SIZE)$(ASM_DEPS)$(S_DEPS)$(S_UPPER_DEPS)$(C_DEPS) UART1.elf
+	-$(RM) $(ASM_UPPER_DEPS)$(OBJS)$(SECONDARY_FLASH)$(SECONDARY_LIST)$(SECONDARY_SIZE)$(ASM_DEPS)$(S_DEPS)$(S_UPPER_DEPS)$(C_DEPS) CH573_PT_Template.elf
 	-@
 secondary-outputs: $(SECONDARY_FLASH) $(SECONDARY_LIST) $(SECONDARY_SIZE)
 

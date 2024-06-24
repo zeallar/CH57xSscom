@@ -5,5 +5,5 @@
 
 USER_OBJS :=
 
-LIBS := -lISP573
+LIBS := -lISP573 -lCH57xBLE
 

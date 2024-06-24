@@ -23,8 +23,13 @@ C_DEPS :=
 
 # Every subdirectory with source files must be described here
 SUBDIRS := \
-RVMSIS \
-Startup \
-StdPeriphDriver \
-src \
+Core/RVMSIS \
+Core/Startup \
+Drivers/BLE/HAL \
+Drivers/StdPeriphDriver \
+OS/ProtoThread-Core/lib \
+OS/ProtoThread-Core \
+OS/ProtoThread-Core/sys \
+OS/ProtoThread-Core/transplant_ports \
+Src/APP \
 
