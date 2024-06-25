@@ -14,48 +14,21 @@ void st7789_Init(void) {
     };
 
     const st7789_command_t initSequence[] = {
-        {ST7789_CMD_SLPIN, 10, 0, NULL},
-        {ST7789_CMD_SWRESET, 200, 0, NULL},
-        {ST7789_CMD_SLPOUT, 120, 0, NULL},
-        {ST7789_CMD_CMD2EN, 0, 0, NULL},
-        {ST7789_CMD_MADCTL, 0, 1, (uint8_t *)"\x00"},
-        {ST7789_CMD_COLMOD, 0, 1, (uint8_t *)"\x55"},
-        {ST7789_CMD_INVON, 0, 0, NULL},
-        {ST7789_CMD_CASET, 0, 4, (uint8_t *)caset},
-        {ST7789_CMD_RASET, 0, 4, (uint8_t *)raset},
-        {ST7789_CMD_PORCTRL, 0, 5, (uint8_t *)"\x0c\x0c\x00\x33\x33"},
-        {ST7789_CMD_GCTRL, 0, 1, (uint8_t *)"\x35"},
-        {ST7789_CMD_VCOMS, 0, 1, (uint8_t *)"\x1f"},
-        {ST7789_CMD_VDVVRHEN, 0, 1, (uint8_t *)"\x01"},
-        {ST7789_CMD_LCMCTRL, 0, 1, (uint8_t *)"\x2c"},
-        {ST7789_CMD_VRHS, 0, 1, (uint8_t *)"\x12"},
-        {ST7789_CMD_VDVSET, 0, 1, (uint8_t *)"\x20"},
-        {ST7789_CMD_PWCTRL1, 0, 2, (uint8_t *)"\xa4\xa1"},
-        {ST7789_CMD_FRCTR2, 0, 1, (uint8_t *)"\x0f"},
-        {ST7789_CMD_GAMSET, 0, 1, (uint8_t *)"\x01"},
-        {ST7789_CMD_PVGAMCTRL, 0, 14, (uint8_t *)"\xd0\x08\x11\x08\x0c\x15\x39\x33\x50\x36\x13\x14\x29\x2d"},
-        {ST7789_CMD_NVGAMCTRL, 0, 14, (uint8_t *)"\xd0\x08\x10\x08\x06\x06\x39\x44\x51\x0b\x16\x14\x2f\x31"},
-        {ST7789_CMD_DISPON, 100, 0, NULL},
-        {ST7789_CMD_RAMWR, 50, 0, NULL},
-        {ST7789_CMDLIST_END, 0, 0, NULL},
+        {ST7789_CMD_SWRESET, 150, 0, NULL},
+        {ST7789_CMD_SLPOUT, 255, 0, NULL},
+        {ST7789_CMD_COLMOD, 10, 1, (uint8_t *)"\x55"},
+        {ST7789_CMD_MADCTL, 1, 1, (uint8_t *)"\x00"},
+        {ST7789_CMD_CASET, 1, 4, (uint8_t *)caset},
+        {ST7789_CMD_RASET, 1, 4, (uint8_t *)raset},
+        {ST7789_CMD_INVON, 10, 0, NULL},
+        {ST7789_CMD_DISPON, 255, 0, NULL},
+        {ST7789_CMD_RAMWR, 0, 0, NULL},
+        {ST7789_CMDLIST_END, 0, 0, NULL}
     };
 
     PRINT("Running Init Sequence...\n");
     st7789_RunCommands(initSequence);
-
-    LCD_IO_Delay(10);
-    st7789_Clear(ST7789_WHITE);
-
-    const st7789_command_t initSequence2[] = {
-        {ST7789_CMD_RGBCTRL, 0, 3, (uint8_t *)"\x42\x08\x3c"},
-        {ST7789_CMD_RAMCTRL, 0, 2, (uint8_t *)"\x11\xc2"},
-        {ST7789_CMD_DISPON, 100, 0, NULL},
-        {ST7789_CMD_RAMWR, 50, 0, NULL},
-        {ST7789_CMDLIST_END, 0, 0, NULL},
-    };
-
-    PRINT("Running Init Sequence 2...\n");
-    st7789_RunCommands(initSequence2);
+    PRINT("Initialization complete.\n");
 }
 
 void st7789_Reset(void) {
@@ -110,13 +83,11 @@ void st7789_SetWindow(uint16_t xStart, uint16_t yStart, uint16_t xEnd, uint16_t 
     st7789_command_t sequence[] = {
         {ST7789_CMD_CASET, 0, 4, caset},
         {ST7789_CMD_RASET, 0, 4, raset},
+        {ST7789_CMD_RAMWR, 0, 0, NULL},
         {ST7789_CMDLIST_END, 0, 0, NULL},
     };
 
     st7789_RunCommands(sequence);
-
-    const st7789_command_t ram_wr = {ST7789_CMD_RAMWR, 0, 0, NULL};
-    st7789_RunCommand(&ram_wr);
 }
 
 void st7789_FillArea(uint16_t color, uint16_t startX, uint16_t startY, uint16_t width, uint16_t height) {
