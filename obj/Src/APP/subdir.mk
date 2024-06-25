@@ -6,15 +6,24 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../Src/APP/CH57x_uart_threads.c \
-../Src/APP/main.c 
+../Src/APP/gpio_test.c \
+../Src/APP/main.c \
+../Src/APP/st7789v_driver.c \
+../Src/APP/ui_test_main.c 
 
 OBJS += \
 ./Src/APP/CH57x_uart_threads.o \
-./Src/APP/main.o 
+./Src/APP/gpio_test.o \
+./Src/APP/main.o \
+./Src/APP/st7789v_driver.o \
+./Src/APP/ui_test_main.o 
 
 C_DEPS += \
 ./Src/APP/CH57x_uart_threads.d \
-./Src/APP/main.d 
+./Src/APP/gpio_test.d \
+./Src/APP/main.d \
+./Src/APP/st7789v_driver.d \
+./Src/APP/ui_test_main.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
