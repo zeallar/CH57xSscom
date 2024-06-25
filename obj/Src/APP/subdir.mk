@@ -9,21 +9,24 @@ C_SRCS += \
 ../Src/APP/gpio_test.c \
 ../Src/APP/main.c \
 ../Src/APP/st7789v_driver.c \
-../Src/APP/ui_test_main.c 
+../Src/APP/ui_test_main.c \
+../Src/APP/ui_test_main2.c 
 
 OBJS += \
 ./Src/APP/CH57x_uart_threads.o \
 ./Src/APP/gpio_test.o \
 ./Src/APP/main.o \
 ./Src/APP/st7789v_driver.o \
-./Src/APP/ui_test_main.o 
+./Src/APP/ui_test_main.o \
+./Src/APP/ui_test_main2.o 
 
 C_DEPS += \
 ./Src/APP/CH57x_uart_threads.d \
 ./Src/APP/gpio_test.d \
 ./Src/APP/main.d \
 ./Src/APP/st7789v_driver.d \
-./Src/APP/ui_test_main.d 
+./Src/APP/ui_test_main.d \
+./Src/APP/ui_test_main2.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
